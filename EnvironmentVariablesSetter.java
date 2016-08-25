@@ -7,8 +7,9 @@ public class EnvironmentVariablesSetter {
     /**
      * Sets all the environment variables.
      *
-     * @param environmentVariablePairs the new environment variable pairs to be set
-     * @return <code>true</code> if the changes were successful
+     * @param environmentVariablePairs the new environment variable pairs to be set. The key
+     * corresponds to the variable and the value corresponds to the file system path.
+     * @return <code>true</code> if the changes were successful.
      */
     public static boolean setEnv(Map<String, String> environmentVariablePairs) {
         try {
