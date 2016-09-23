@@ -22,11 +22,11 @@ public class EnvironmentVariablesSetter {
     /**
      * Sets a field's access privilege to <tt>true</tt>.
      *
-     * @param field the field who's access to be set to <tt>true</tt>
+     * @param f the field who's access to be set to <tt>true</tt>
      */
-    private static void allowAccessTo(final Field field) {
+    private static void allowAccessTo(final Field f) {
         AccessController.doPrivileged((PrivilegedAction<?>) () -> {
-            field.setAccessible(true);
+            f.setAccessible(true);
             return null;
         });
     }
@@ -34,11 +34,10 @@ public class EnvironmentVariablesSetter {
     /**
      * Sets all the environment variables.
      *
-     * @param environmentVariablePairs the new environment variable pairs to be set. The key
+     * @param newEnvironmentVariables the new environment variable pairs to be set. The key
      *        corresponds to the variable and the value corresponds to the file system path.
-     * @return <code>true</code> if the changes were successful.
+     * @return <tt>true</tt> if the changes were successful.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public static boolean setEnv(final Map<String, String> newEnvironmentVariables) {
         try {
             final Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
@@ -46,11 +45,9 @@ public class EnvironmentVariablesSetter {
             allowAccessTo(environmentField);
             final Map<String, String> env = (Map<String, String>) environmentField.get(null);
             env.putAll(newEnvironmentVariables);
-            final Field caseInsensitiveEnvironmentField = 
-                    processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
+            final Field caseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
             allowAccessTo(caseInsensitiveEnvironmentField);
-            final Map<String, String> caseInsensitiveEnvironment = 
-                    (Map<String, String>) caseInsensitiveEnvironmentField.get(null);
+            final Map<String, String> caseInsensitiveEnvironment = (Map<String, String>) caseInsensitiveEnvironmentField.get(null);
             caseInsensitiveEnvironment.putAll(newEnvironmentVariables);
         } catch (final NoSuchFieldException nsfe) {
             LOG.error("Encountered no such field exception", nsfe);
