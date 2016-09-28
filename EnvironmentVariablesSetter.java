@@ -67,8 +67,8 @@ public class EnvironmentVariablesSetter {
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 LOG.error("Encountered error", e);
             }
-        } catch (final Exception exeption) {
-            LOG.error("Encountered error", exeption);
+        } catch (final Exception exception) {
+            LOG.error("Encountered error", exception);
             return false;
         }
         return true;
